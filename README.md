@@ -1,5 +1,7 @@
 # Hut
 
+Status: pre-alpha
+
 Hut is a very simple Terraform runner that works with a particular standard Terraform project structure to automatically add appropriate `-chdir`, `-var-file`, and `-backend-config` arguments before running Terraform.
 
 * Hut passes all command line arguments through to Terraform, so commands like `hut plan -target=ADDRESS` work just fine. If the Hut project structure is not detected, it's just like using Terraform directly.
