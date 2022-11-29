@@ -26,7 +26,7 @@ Specification:
 
 ### What is it like to use?
 
-Have you noticed how the Terraform commands [in](https://learn.hashicorp.com/tutorials/terraform/init) [most](https://learn.hashicorp.com/tutorials/terraform/plan) [tutorials](https://learn.hashicorp.com/tutorials/terraform/variables) don't include any `-var-file` or `-backend-config` arguments? You create write some code and run short commands like `terraform init` and `terraform plan`. Terraform seems so nice and simple to use!
+Have you noticed how the Terraform commands [in](https://learn.hashicorp.com/tutorials/terraform/init) [most](https://learn.hashicorp.com/tutorials/terraform/plan) [tutorials](https://learn.hashicorp.com/tutorials/terraform/variables) don't include any `-var-file` or `-backend-config` arguments? You write some code and run short commands like `terraform init` and `terraform plan`. Terraform seems so nice and simple to use!
 
 But things are complicated when you introduce multiple environments. There are a few options:
 
