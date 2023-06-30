@@ -10,12 +10,12 @@ Hut is a very simple Terraform runner that works with a particular standard Terr
 
 ## Project structure
 
-If Hut detects this structure, then it adds extra arguments before running Terraform. If this project structure is not detected, then no arguments get added, and it's just like running Terraform directly.
+If Hut detects this structure, then it adds extra arguments before running Terraform. If this project structure is not detected, then no arguments get added and it's just like running Terraform directly.
 
-This structure is [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself). It allows a [root module](https://www.terraform.io/language/modules#the-root-module) to be deployed to multiple environments, by putting environment-specific variables and backend configuration in environment-specific subdirectories. Hut figures out the extra Terraform arguments needed to make Terraform
+This structure is [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself). It allows a [root module](https://www.terraform.io/language/modules#the-root-module) to be deployed to multiple environments by putting environment-specific variables and backend configuration in environment-specific subdirectories. Hut figures out the extra Terraform arguments needed to make Terraform
 work with this directory structure.
 
-This structure is still valid/standard/vanilla Terraform. Terraform can still be used directly if passed in the arguments normally added by Hut. Hut even prints out the final Terraform command before it runs, so it can be copied and used directly (e.g. in CI/CD scripts).
+This directory structure is still valid/standard/vanilla Terraform. Terraform can still be used directly if passed in the same arguments would be added by Hut. Hut even prints out the final Terraform command before it runs, so it can be copied and used directly (e.g. in CI/CD scripts).
 
 Specification:
 
@@ -28,7 +28,7 @@ Specification:
 
 ### What is it like to use?
 
-Have you noticed how the Terraform commands [in](https://learn.hashicorp.com/tutorials/terraform/init) [most](https://learn.hashicorp.com/tutorials/terraform/plan) [tutorials](https://learn.hashicorp.com/tutorials/terraform/variables) don't include any `-var-file` or `-backend-config` arguments? You write some code and run short commands like `terraform init` and `terraform plan`. Terraform seems so nice and simple to use!
+Have you noticed how the Terraform commands [in](https://developer.hashicorp.com/terraform/tutorials/cli/init) [most](https://developer.hashicorp.com/terraform/tutorials/cli/plan) [tutorials](https://developer.hashicorp.com/terraform/tutorials/configuration-language/variables) don't include any `-var-file` or `-backend-config` arguments? You write some code and run short commands like `terraform init` and `terraform plan`. Terraform seems so nice and simple to use!
 
 But things are complicated when you introduce multiple environments. There are a few options:
 
@@ -40,7 +40,7 @@ But things are complicated when you introduce multiple environments. There are a
 * Manually add `-var-file`, `-backend-config`, `-chdir` arguments when running Terraform.
   * Easy to forget.
   * Easy to make a mistake.
-  * More stressful, if you're not confident that you have all of the correct arguments.
+  * More stressful if you're not confident that you have all of the correct arguments.
 * Use a Terraform wrapper.
   * There are many options out there.
   * Do they require much from you? (learning, installation, dependencies, configuration, etc)
@@ -72,7 +72,7 @@ Day-to-day usage might look like this:
 ~/example/eu/prod # hut plan
 ```
 
-Notice the commands are short, and how the current directory makes the target environment very obvious.
+Notice how the commands are short, and the current directory makes the target environment very obvious.
 
 ## Lineage
 

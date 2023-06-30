@@ -8,3 +8,4 @@ test:
 	cd example/au && HUT_DRY_RUN=1 hut init
 	cd example/au/dev && HUT_DRY_RUN=1 hut init
 	cd example/au/dev && HUT_DRY_RUN=1 hut plan
+	@echo test finished successfully

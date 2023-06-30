@@ -29,9 +29,8 @@ func main() {
 	} else {
 		fmt.Fprintf(os.Stderr, "# hut run: %s\n", cmd)
 		err = cmd.Run()
+		exitErr(err)
 	}
-
-	exitErr(err)
 }
 
 func exitErr(err error) {
