@@ -10,12 +10,34 @@ Hut is a very simple Terraform runner that works with a particular standard Terr
 
 ## Project structure
 
-If Hut detects this structure, then it adds extra arguments before running Terraform. If this project structure is not detected, then no arguments get added and it's just like running Terraform directly.
+If Hut detects a specific project structure, then it adds extra arguments before running Terraform. If this project structure is not detected, then no arguments get added and it's just like running Terraform directly.
 
 This structure is [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself). It allows a [root module](https://www.terraform.io/language/modules#the-root-module) to be deployed to multiple environments by putting environment-specific variables and backend configuration in environment-specific subdirectories. Hut figures out the extra Terraform arguments needed to make Terraform
 work with this directory structure.
 
-This directory structure is still valid/standard/vanilla Terraform. Terraform can still be used directly if passed in the same arguments would be added by Hut. Hut even prints out the final Terraform command before it runs, so it can be copied and used directly (e.g. in CI/CD scripts).
+This directory structure is still valid/standard/vanilla Terraform. Terraform can still be used directly if passed in the same arguments that would be added by Hut. Hut even prints out the final Terraform command before running Terraform, so it can be copied and used directly without Hut (e.g. in CI/CD scripts).
+
+Example:
+
+```
+main.tf
+au/
+  au.auto.tfvars
+  dev/
+    terraform.tfbackend
+    terraform.tfvars
+  prod/
+    terraform.tfbackend
+    terraform.tfvars
+eu/
+  eu.auto.tfvars
+  dev/
+    terraform.tfbackend
+    terraform.tfvars
+  prod/
+    terraform.tfbackend
+    terraform.tfvars
+```
 
 Specification:
 
@@ -26,7 +48,7 @@ Specification:
   * If running from a subdirectory, `TERRAFORM_DATA_DIR=${current_dir}/.terraform` and `-chdir=${root_module_dir}` are added to the Terraform command so it runs in the root module directory while still using the current directory for the `.terraform` data directory.
   * For `terraform.tfvars[.json]`, `*.auto.tfvars[.json]`, and `*.tfbackend` files in the current directory and any parent directories, stopping at the root module, a `-var-file` or `-backend-config` argument is added to the Terraform command as appropriate.
 
-### What is it like to use?
+## What is it like to use?
 
 Have you noticed how the Terraform commands [in](https://developer.hashicorp.com/terraform/tutorials/cli/init) [most](https://developer.hashicorp.com/terraform/tutorials/cli/plan) [tutorials](https://developer.hashicorp.com/terraform/tutorials/configuration-language/variables) don't include any `-var-file` or `-backend-config` arguments? You write some code and run short commands like `terraform init` and `terraform plan`. Terraform seems so nice and simple to use!
 
