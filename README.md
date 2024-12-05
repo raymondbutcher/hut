@@ -1,21 +1,18 @@
 # Hut
 
-Status: pre-alpha
+Hut is a very simple Terraform runner that works with compatible Terraform project structures to automatically add appropriate `-chdir`, `-var-file`, and `-backend-config` arguments before running Terraform.
 
-Hut is a very simple Terraform runner that works with a particular standard Terraform project structure to automatically add appropriate `-chdir`, `-var-file`, and `-backend-config` arguments before running Terraform.
+* Hut does not really do anything itself; all it does is determine the right Terraform command to run based on the current directory, and then runs it.
+* Hut passes all command line arguments through to Terraform, so commands like `hut plan -target=ADDRESS` work just fine.
+* Hut prints out the final Terraform command before running it, so you can always see what Hut is doing.
 
-* Hut passes all command line arguments through to Terraform, so commands like `hut plan -target=ADDRESS` work just fine. If the Hut project structure is not detected, it's just like using Terraform directly.
-* Hut does not create any temporary directories or temporary files; all it does is run Terraform.
-* Hut prints out the full Terraform command before running it, so you can always see what Hut is doing.
+## Compatible project structure
 
-## Project structure
+If Hut detects a compatible project structure, then it adds extra arguments before running Terraform. If the project is not compatible, then no arguments get added and it's just like running Terraform directly.
 
-If Hut detects a specific project structure, then it adds extra arguments before running Terraform. If this project structure is not detected, then no arguments get added and it's just like running Terraform directly.
+This structure is [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself). It allows a [root module](https://www.terraform.io/language/modules#the-root-module) to be deployed to multiple environments by putting environment-specific variables and backend configuration in environment-specific subdirectories. Hut figures out the extra Terraform CLI arguments needed to make Terraform work with this directory structure.
 
-This structure is [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself). It allows a [root module](https://www.terraform.io/language/modules#the-root-module) to be deployed to multiple environments by putting environment-specific variables and backend configuration in environment-specific subdirectories. Hut figures out the extra Terraform arguments needed to make Terraform
-work with this directory structure.
-
-This directory structure is still valid/standard/vanilla Terraform. Terraform can still be used directly if passed in the same arguments that would be added by Hut. Hut even prints out the final Terraform command before running Terraform, so it can be copied and used directly without Hut (e.g. in CI/CD scripts).
+This directory structure is still valid/standard/vanilla Terraform. Terraform can still be used directly if passed the same arguments that would be added by Hut. Hut even prints out the final Terraform command before running Terraform, so it can be copied and used directly without Hut (e.g. in CI/CD scripts).
 
 Example:
 
@@ -42,7 +39,6 @@ eu/
 Specification:
 
 * The [root module](https://www.terraform.io/language/modules#the-root-module) must contains at least one `*.tf[.json]` file.
-* The root module may contain any number of subdirectories and they may be nested (multiple levels deep).
 * The root module, or any of its subdirectories, may contain `terraform.tfvars[.json]`, `*.auto.tfvars[.json]`, and `*.tfbackend` files. There may be any number of these, and in any location.
 * When Hut runs from a root module directory, or any of its subdirectories, and the directory contains a `terraform.tfvars[.json]` file:
   * If running from a subdirectory, `TERRAFORM_DATA_DIR=${current_dir}/.terraform` and `-chdir=${root_module_dir}` are added to the Terraform command so it runs in the root module directory while still using the current directory for the `.terraform` data directory.
